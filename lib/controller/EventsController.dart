@@ -20,4 +20,16 @@ class EventsController extends ResourceController {
     return Response.ok(events);
 
   }
+  
+  @Operation.get('id')
+  Future<Response> getEventById(@Bind.path('id') int id) async{
+    final eventQuery = Query<Event>(context)
+        ..where((h) => h.id).equalTo(id);
+    final event = await eventQuery.fetchOne();
+    
+    if(event == null){
+      return Response.notFound();
+    }
+    return Response.ok(event);
+  }
 }
