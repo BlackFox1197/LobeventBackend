@@ -1,5 +1,7 @@
 import 'package:lobevent_backend/lobevent_backend.dart';
 
+import 'User_EventStatus.dart';
+
 class Event extends ManagedObject<_Event> implements _Event {}
 
 class _Event {
@@ -11,4 +13,7 @@ class _Event {
 
   @Column(indexed: true)
   DateTime date;
+
+  ManagedSet<User_EventStatus> usrEvntSts;
+
 }

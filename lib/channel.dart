@@ -34,7 +34,9 @@ class LobeventBackendChannel extends ApplicationChannel {
     router
       .route("/events/[:id]")
       .link(() => EventsController(context));
-
+     /*router
+      .route("/user/eventStatus/[:eventId]")
+        .link(() => );*/
     return router;
   }
 }

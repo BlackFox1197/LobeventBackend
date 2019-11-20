@@ -1,6 +1,6 @@
 import 'package:lobevent_backend/lobevent_backend.dart';
 import 'package:aqueduct/aqueduct.dart';
-import 'package:lobevent_backend/model/event.dart';
+import 'package:lobevent_backend/model/Event.dart';
 
 class EventsController extends ResourceController {
   EventsController(this.context);
@@ -32,4 +32,6 @@ class EventsController extends ResourceController {
     }
     return Response.ok(event);
   }
+
+
 }
