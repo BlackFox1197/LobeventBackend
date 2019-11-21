@@ -20,7 +20,7 @@ class User_EventStatusController extends ResourceController{
 
 
   @Operation.post('userId')
-  Future<Response> (@Bind.path('userId') int userId) async{
+  Future<Response> insertEventStatus(@Bind.path('userId') int userId) async{
     final user_EventStatus = User_EventStatus()
       ..read(await request.body.decode(), ignore: ["id"]);
     final query = Query<User_EventStatus>(context)..values = user_EventStatus;
