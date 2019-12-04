@@ -12,10 +12,10 @@ class _User_EventStatus {
   int id;
 
   @Relate(#usrEvntSts)
-  User userId;
+  User user;
 
   @Relate(#usrEvntSts)
-  Event eventId;
+  Event event;
 
   @Column(indexed: true)
   int status;

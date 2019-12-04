@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:lobevent_backend/lobevent_backend.dart';
 import 'package:aqueduct/aqueduct.dart';
 import 'package:lobevent_backend/model/Event.dart';
@@ -31,6 +33,17 @@ class EventsController extends ResourceController {
       return Response.notFound();
     }
     return Response.ok(event);
+  }
+
+  @Operation.post()
+  Future<Response> proccessPostedEvent() async {
+    const userId = 1;
+    final event = Event()
+      ..read(await request.body.decode(), ignore: ["id"]);
+    event.user.id = userId;
+    final eventQuery = Query<Event>(context)..values = event;
+    final insertedEvent = await eventQuery.insert();
+    return Response.ok(insertedEvent);
   }
 
 

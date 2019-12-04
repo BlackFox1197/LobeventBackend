@@ -1,4 +1,5 @@
 import 'package:lobevent_backend/controller/EventsController.dart';
+import 'package:lobevent_backend/controller/User_EventStatusController.dart';
 
 import 'lobevent_backend.dart';
 
@@ -34,9 +35,9 @@ class LobeventBackendChannel extends ApplicationChannel {
     router
       .route("/events/[:id]")
       .link(() => EventsController(context));
-     /*router
-      .route("/user/eventStatus/[:eventId]")
-        .link(() => );*/
+     router
+      .route("/users/eventStatus/[:userId]")
+        .link(() => User_EventStatusController(context));
     return router;
   }
 }
