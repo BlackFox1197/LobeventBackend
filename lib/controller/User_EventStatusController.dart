@@ -1,4 +1,5 @@
 import 'package:lobevent_backend/lobevent_backend.dart';
+import 'package:lobevent_backend/model/Event.dart';
 import 'package:lobevent_backend/model/User_EventStatus.dart';
 import 'package:aqueduct/aqueduct.dart';
 
@@ -11,12 +12,14 @@ class User_EventStatusController extends ResourceController{
   Future<Response> getEventsOfInterrest(@Bind.path('userId') int userId) async{
     final usrEvntQuery = Query<User_EventStatus>(context);
     usrEvntQuery.where((h) => h.user.id).equalTo(userId);
+    usrEvntQuery.where((usrEvntSts) => usrEvntSts.status).equalTo(0);
     usrEvntQuery.join(object: (usrEvnt) => usrEvnt.event);
-    final eventsOfInterest = await usrEvntQuery.fetch();
-
-
-    return Response.ok(eventsOfInterest);
+    final eventUserStatusOfInterest = await usrEvntQuery.fetch();
+    List<Event> eventsOfInterrest = eventUserStatusOfInterest.map((u) => u.event).toList();
+    return Response.ok(eventsOfInterrest);
   }
+
+
 
 
   @Operation.post('userId')

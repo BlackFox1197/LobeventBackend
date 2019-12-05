@@ -11,10 +11,10 @@ class _User_EventStatus {
   @primaryKey
   int id;
 
-  @Relate(#usrEvntSts)
+  @Relate(#usrEvntSts, onDelete: DeleteRule.cascade)
   User user;
 
-  @Relate(#usrEvntSts)
+  @Relate(#usrEvntSts, onDelete: DeleteRule.cascade)
   Event event;
 
   @Column(indexed: true)

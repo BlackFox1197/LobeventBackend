@@ -6,7 +6,7 @@ import 'package:lobevent_backend/model/Event.dart';
 
 class EventsController extends ResourceController {
   EventsController(this.context);
-
+  final userId = 1;
   final ManagedContext context;
 
   @Operation.get()
@@ -37,13 +37,22 @@ class EventsController extends ResourceController {
 
   @Operation.post()
   Future<Response> proccessPostedEvent() async {
-    const userId = 1;
     final event = Event()
       ..read(await request.body.decode(), ignore: ["id"]);
     event.user.id = userId;
     final eventQuery = Query<Event>(context)..values = event;
     final insertedEvent = await eventQuery.insert();
     return Response.ok(insertedEvent);
+  }
+
+  @Operation.delete("id")
+  Future<Response> getMyEvents(@Bind.path('id') int eventId) async{
+
+    final eventDeleteQuery = Query<Event>(context);
+    eventDeleteQuery.where((e) => e.id).equalTo(eventId);
+    eventDeleteQuery.where((e) => e.user.id).equalTo(userId);
+    final deletedEvent = await eventDeleteQuery.delete();
+    return Response.ok(deletedEvent);
   }
 
 
