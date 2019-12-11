@@ -14,16 +14,19 @@ class EventsController extends ResourceController {
   @Operation.get()
   Future<Response> getAllEvents({@Bind.query('name') String name}) async {
     final eventQuery = Query<Event>(context);
-    eventQuery.where((e) => e.usrEvntSts.) .  not.isNotNull();
-    /*eventQuery..where((e) => e.usrEvntSts.removeWhere((ues) => ues.user.id != userId)).not.isNotNull()
-      ..join(set: (e) => e.usrEvntSts)
-      ..where((ues) => ues.user.id).not.equalTo(userId);*/
+    eventQuery
+      .join(set: (e) => e.usrEvntSts).returningProperties((ues) => [ues.user.id]);
+
 
     if (name != null) {
       eventQuery.where((h) => h.name).contains(name, caseSensitive: false);
     }
-    final events = await eventQuery.fetch();
 
+
+    final events = await eventQuery.fetch();
+    events.forEach((e) => e.usrEvntSts.removeWhere((e) => e.user.id != userId));
+    events.removeWhere((e) => e.usrEvntSts.isNotEmpty);
+    events.forEach((e) => e.removePropertiesFromBackingMap(["usrEvntSts"]));
     return Response.ok(events);
   }
   
