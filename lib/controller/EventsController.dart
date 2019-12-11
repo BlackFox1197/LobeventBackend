@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:lobevent_backend/lobevent_backend.dart';
 import 'package:aqueduct/aqueduct.dart';
 import 'package:lobevent_backend/model/Event.dart';
+import 'package:lobevent_backend/model/User_EventStatus.dart';
 
 class EventsController extends ResourceController {
   EventsController(this.context);
@@ -12,15 +14,17 @@ class EventsController extends ResourceController {
   @Operation.get()
   Future<Response> getAllEvents({@Bind.query('name') String name}) async {
     final eventQuery = Query<Event>(context);
+    eventQuery.where((e) => e.usrEvntSts.) .  not.isNotNull();
+    /*eventQuery..where((e) => e.usrEvntSts.removeWhere((ues) => ues.user.id != userId)).not.isNotNull()
+      ..join(set: (e) => e.usrEvntSts)
+      ..where((ues) => ues.user.id).not.equalTo(userId);*/
 
     if (name != null) {
       eventQuery.where((h) => h.name).contains(name, caseSensitive: false);
     }
-
     final events = await eventQuery.fetch();
 
     return Response.ok(events);
-
   }
   
   @Operation.get('id')
